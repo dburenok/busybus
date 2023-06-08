@@ -1,8 +1,13 @@
-import { faBus } from "@fortawesome/free-solid-svg-icons";
+import { faMapPin } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Map, { Marker } from "react-map-gl";
+import busData from "../data/bus_stops.json";
+
+const busStops = busData.stops;
 
 export function BusMap() {
+  const busStopIcon = faMapPin;
+
   return (
     <Map
       reuseMaps={true}
@@ -15,13 +20,34 @@ export function BusMap() {
       mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
       attributionControl={false}
     >
-      <Marker
-        latitude={49.26349162711313}
-        longitude={-123.18588908494505}
-        anchor="center"
-      >
-        <FontAwesomeIcon icon={faBus} color="green" size="2x" />;
-      </Marker>
+      {busStops.map((busStop) => {
+        return (
+          <Marker
+            key={busStop["StopNo"]}
+            latitude={busStop["Latitude"]}
+            longitude={busStop["Longitude"]}
+            anchor="center"
+            onClick={() => {
+              showStopInfoBox(busStop);
+            }}
+          >
+            <FontAwesomeIcon
+              icon={busStopIcon}
+              size="2x"
+              style={{
+                color: "green",
+                cursor: "pointer",
+              }}
+            />
+          </Marker>
+        );
+      })}
     </Map>
+  );
+}
+
+function showStopInfoBox(busStop) {
+  alert(
+    busStop.Name + "\n" + busStop["Latitude"] + ", " + busStop["Longitude"]
   );
 }
