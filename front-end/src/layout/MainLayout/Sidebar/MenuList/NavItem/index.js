@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
-import {  useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
@@ -34,7 +34,6 @@ const NavItem = ({ item }) => {
       fontSize={'inherit'}
     />
   );
-  
 
   const itemHandler = (id) => {
     dispatch({ type: MENU_OPEN, id });
@@ -60,23 +59,23 @@ const NavItem = ({ item }) => {
         mb: 0.5,
         alignItems: 'flex-start',
         backgroundColor: 'inherit',
-        py:  1.25,
+        py: 1.25,
         pl: `24px`
       }}
-      selected={selectedBus === item.id} 
+      selected={selectedBus === item.id}
       onClick={() => itemHandler(item.id)}
     >
       <ListItemIcon sx={{ my: 'auto', minWidth: !item?.icon ? 18 : 36 }}>{itemIcon}</ListItemIcon>
       <ListItemText
         primary={
-          <Typography variant={selectedBus == item.id ? 'h5' : 'body1'} color="inherit">
-            {"Estimate time: " + item.estimateTime + "min"}
+          <Typography variant={selectedBus === item.id ? 'h5' : 'body1'} color="inherit">
+            {'Estimate time: ' + item.estimateTime + 'min'}
           </Typography>
         }
         secondary={
-            <Typography variant="caption" sx={{ ...theme.typography.subMenuCaption }} display="block" gutterBottom>
-              {item.capacity}
-            </Typography>
+          <Typography variant="caption" sx={{ ...theme.typography.subMenuCaption }} display="block" gutterBottom>
+            {item.capacity}
+          </Typography>
         }
       />
       {item.chip && (
@@ -93,7 +92,7 @@ const NavItem = ({ item }) => {
 };
 
 NavItem.propTypes = {
-  item: PropTypes.object,
+  item: PropTypes.object
 };
 
 export default NavItem;

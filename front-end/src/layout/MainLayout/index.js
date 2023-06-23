@@ -10,7 +10,7 @@ import Header from './Header';
 import Sidebar from './Sidebar';
 import { drawerWidth } from '../../store/constant';
 // import { SET_MENU } from '../../store/actionTypes';
-import busyBusSlice from '../../store/BusyBusReducer'
+import busyBusSlice from '../../store/BusyBusReducer';
 
 // styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Box, Drawer,  useMediaQuery } from '@mui/material';
+import { Box, Drawer, useMediaQuery } from '@mui/material';
 
 // third-party
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -35,7 +35,6 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
       <MobileView>
         <Box sx={{ px: 2 }}>
           <MenuList />
-          
         </Box>
       </MobileView>
     </>
@@ -56,7 +55,7 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
             width: drawerWidth,
             background: theme.palette.background.default,
             color: theme.palette.text.primary,
-            borderRight: 'none',
+            borderLeft: 'none',
             [theme.breakpoints.up('md')]: {
               top: '88px'
             }

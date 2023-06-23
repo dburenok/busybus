@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 export const initialState = {
   isOpen: [], // for active default menu
   defaultId: 'default',
-  opened: true,
+  opened: false,
   commuter: {
     busRoutesSearchResult: [],
     busStopsSearchResult: [],
@@ -27,7 +27,6 @@ export const initialState = {
 
 // ==============================|| CUSTOMIZATION REDUCER ||============================== //
 
-
 const busyBusSlice = createSlice({
   name: 'groceries',
   initialState: initialState,
@@ -45,6 +44,9 @@ const busyBusSlice = createSlice({
     getBusStopsbyRoute: (state, action) => {
       const data = dummyBusStopData.stops.filter((busStop) => busStop.Routes.includes(action.payload));
       state.commuter.busStopsSearchResult = data;
+    },
+    clearUpcomingBuses: (state) => {
+      state.commuter.busStopsSearchResult = [];
     },
     getUpcomingBusesbyBusStop: (state) => {
       state.commuter.upComingBuses = {

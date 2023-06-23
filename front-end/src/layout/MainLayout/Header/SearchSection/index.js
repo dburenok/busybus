@@ -119,16 +119,14 @@ MobileSearch.propTypes = {
   popupState: PopupState
 };
 
-
 import * as React from 'react';
-
 
 const SearchAutoComplete = () => {
   const [open, setOpen] = React.useState(false);
   const busRoutes = useSelector((state) => state.busyBus.commuter.busRoutesSearchResult);
-  const loading = open && busRoutes.length === 0;
+  console.log(busRoutes);
+  const loading = false; // open && busRoutes.length === 0;
   const dispatch = useDispatch();
-
 
   return (
     <Autocomplete
@@ -144,12 +142,23 @@ const SearchAutoComplete = () => {
       getOptionLabel={(option) => option.route}
       options={busRoutes}
       loading={loading}
-      onChange={(event, v) => {dispatch(busyBusSlice.actions.getBusStopsbyRoute(v.route))}}
+      onChange={(event, v) => {
+        if (v === null) {
+          dispatch(busyBusSlice.actions.setMenu(false)); // hide sidebar
+          dispatch(busyBusSlice.actions.clearUpcomingBuses());
+          return; // control was cleared
+        }
+
+        dispatch(busyBusSlice.actions.getBusStopsbyRoute(v.route));
+      }}
       renderInput={(params) => (
         <TextField
           {...params}
-          label="search bus routes here"
-          onChange={(e) => {dispatch(busyBusSlice.actions.getBusRoutebyName(e.target.value));}}
+          label="Enter bus route here... (ex. 49)"
+          onChange={(e) => {
+            // fired when text input is changed
+            dispatch(busyBusSlice.actions.getBusRoutebyName(e.target.value));
+          }}
           InputProps={{
             ...params.InputProps,
             endAdornment: (
@@ -157,14 +166,13 @@ const SearchAutoComplete = () => {
                 {loading ? <CircularProgress color="inherit" size={20} /> : null}
                 {params.InputProps.endAdornment}
               </React.Fragment>
-            ),
+            )
           }}
         />
       )}
     />
   );
-}
-
+};
 
 // ==============================|| SEARCH INPUT ||============================== //
 
@@ -214,7 +222,7 @@ const SearchSection = () => {
         </PopupState>
       </Box>
       <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-        <SearchAutoComplete/>
+        <SearchAutoComplete />
       </Box>
     </>
   );
