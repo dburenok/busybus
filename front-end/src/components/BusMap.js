@@ -1,8 +1,15 @@
-import { faBus } from "@fortawesome/free-solid-svg-icons";
+import { useSelector, useDispatch } from 'react-redux';
+import { faMapPin } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Map, { Marker } from "react-map-gl";
+import busyBusSlice from 'store/BusyBusReducer';
+
 
 export function BusMap() {
+  const busStopIcon = faMapPin;
+  const busStops = useSelector((state) => state.busyBus.commuter.busStopsSearchResult);
+  const dispatch = useDispatch();
+
   return (
     <Map
       reuseMaps={true}
@@ -15,13 +22,28 @@ export function BusMap() {
       mapboxAccessToken={process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
       attributionControl={false}
     >
-      <Marker
-        latitude={49.26349162711313}
-        longitude={-123.18588908494505}
-        anchor="center"
-      >
-        <FontAwesomeIcon icon={faBus} color="green" size="2x" />;
-      </Marker>
+      {busStops.map((busStop) => {
+        return (
+          <Marker
+            key={busStop["StopNo"]}
+            latitude={busStop["Latitude"]}
+            longitude={busStop["Longitude"]}
+            anchor="center"
+            onClick={() => {
+              dispatch(busyBusSlice.actions.getUpcomingBusesbyBusStop());
+            }}
+          >
+            <FontAwesomeIcon
+              icon={busStopIcon}
+              size="2x"
+              style={{
+                color: "green",
+                cursor: "pointer",
+              }}
+            />
+          </Marker>
+        );
+      })}
     </Map>
   );
 }
