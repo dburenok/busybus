@@ -9,8 +9,8 @@ import { AppBar, Box, CssBaseline, Toolbar, useMediaQuery } from '@mui/material'
 import Header from './Header';
 import Sidebar from './Sidebar';
 import { drawerWidth } from '../../store/constant';
-import { SET_MENU } from '../../store/actions';
-
+// import { SET_MENU } from '../../store/actionTypes';
+import busyBusSlice from '../../store/BusyBusReducer';
 
 // styles
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
@@ -52,10 +52,10 @@ const MainLayout = () => {
   const theme = useTheme();
   const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
   // Handle left drawer
-  const leftDrawerOpened = useSelector((state) => state.customization.opened);
+  const leftDrawerOpened = useSelector((state) => state.busyBus.opened);
   const dispatch = useDispatch();
   const handleLeftDrawerToggle = () => {
-    dispatch({ type: SET_MENU, opened: !leftDrawerOpened });
+    dispatch(busyBusSlice.actions.setMenu(!leftDrawerOpened));
   };
 
   return (
@@ -78,7 +78,7 @@ const MainLayout = () => {
       </AppBar>
 
       {/* drawer */}
-      
+
       {/* main content */}
       <Main theme={theme} open={leftDrawerOpened}>
         {/* breadcrumb */}
@@ -86,7 +86,6 @@ const MainLayout = () => {
         <Outlet />
       </Main>
       <Sidebar drawerOpen={!matchDownMd ? leftDrawerOpened : !leftDrawerOpened} drawerToggle={handleLeftDrawerToggle} />
-
     </Box>
   );
 };

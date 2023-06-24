@@ -1,5 +1,8 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+import CircularProgress from '@mui/material/CircularProgress';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
@@ -14,6 +17,9 @@ import Transitions from 'ui-component/extended/Transitions';
 // assets
 import { IconAdjustmentsHorizontal, IconSearch, IconX } from '@tabler/icons';
 import { shouldForwardProp } from '@mui/system';
+
+// actions
+import busyBusSlice from 'store/BusyBusReducer';
 
 // styles
 const PopperStyle = styled(Popper, { shouldForwardProp })(({ theme }) => ({
@@ -113,11 +119,65 @@ MobileSearch.propTypes = {
   popupState: PopupState
 };
 
+import * as React from 'react';
+
+const SearchAutoComplete = () => {
+  const [open, setOpen] = React.useState(false);
+  const busRoutes = useSelector((state) => state.busyBus.commuter.busRoutesSearchResult);
+  console.log(busRoutes);
+  const loading = false; // open && busRoutes.length === 0;
+  const dispatch = useDispatch();
+
+  return (
+    <Autocomplete
+      sx={{ width: 300 }}
+      open={open}
+      onOpen={() => {
+        setOpen(true);
+      }}
+      onClose={() => {
+        setOpen(false);
+      }}
+      isOptionEqualToValue={(option, value) => option.route === value.route}
+      getOptionLabel={(option) => option.route}
+      options={busRoutes}
+      loading={loading}
+      onChange={(event, v) => {
+        if (v === null) {
+          dispatch(busyBusSlice.actions.setMenu(false)); // hide sidebar
+          dispatch(busyBusSlice.actions.clearUpcomingBuses());
+          return; // control was cleared
+        }
+
+        dispatch(busyBusSlice.actions.getBusStopsbyRoute(v.route));
+      }}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          label="Enter bus route here... (ex. 49)"
+          onChange={(e) => {
+            // fired when text input is changed
+            dispatch(busyBusSlice.actions.getBusRoutebyName(e.target.value));
+          }}
+          InputProps={{
+            ...params.InputProps,
+            endAdornment: (
+              <React.Fragment>
+                {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                {params.InputProps.endAdornment}
+              </React.Fragment>
+            )
+          }}
+        />
+      )}
+    />
+  );
+};
+
 // ==============================|| SEARCH INPUT ||============================== //
 
 const SearchSection = () => {
   const theme = useTheme();
-  const [value, setValue] = useState('');
 
   return (
     <>
@@ -162,28 +222,7 @@ const SearchSection = () => {
         </PopupState>
       </Box>
       <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-        <OutlineInputStyle
-          id="input-search-header"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          placeholder="Search"
-          startAdornment={
-            <InputAdornment position="start">
-              <IconSearch stroke={1.5} size="1rem" color={theme.palette.grey[500]} />
-            </InputAdornment>
-          }
-          endAdornment={
-            <InputAdornment position="end">
-              <ButtonBase sx={{ borderRadius: '12px' }}>
-                <HeaderAvatarStyle variant="rounded">
-                  <IconAdjustmentsHorizontal stroke={1.5} size="1.3rem" />
-                </HeaderAvatarStyle>
-              </ButtonBase>
-            </InputAdornment>
-          }
-          aria-describedby="search-helper-text"
-          inputProps={{ 'aria-label': 'weight' }}
-        />
+        <SearchAutoComplete />
       </Box>
     </>
   );
