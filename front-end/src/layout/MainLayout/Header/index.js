@@ -51,7 +51,6 @@ const Header = ({ handleLeftDrawerToggle }) => {
 
       {/* header search */}
       <SearchSection />
-      
     </>
   );
 };

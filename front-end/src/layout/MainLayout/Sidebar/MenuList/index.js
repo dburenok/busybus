@@ -6,16 +6,12 @@ import NavGroup from './NavGroup';
 
 const MenuList = () => {
   const busGroups = useSelector((state) => state.busyBus.commuter.upComingBuses);
-  
+
   const navGroups = [];
   for (const busGroup in busGroups) {
-    navGroups.push(<NavGroup key={busGroup} title={busGroup} items={busGroups[busGroup]}/>);
+    navGroups.push(<NavGroup key={busGroup} title={busGroup} items={busGroups[busGroup]} />);
   }
-  return (
-    <>
-    {navGroups}
-    </>
-  );
+  return <>{navGroups}</>;
 };
 
 export default MenuList;
