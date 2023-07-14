@@ -10,6 +10,7 @@ import NavItem from '../NavItem';
 // ==============================|| SIDEBAR MENU LIST GROUP ||============================== //
 
 const NavGroup = ({ title, items }) => {
+  console.log({ title, items });
   const theme = useTheme();
 
   // menu list collapse & items
@@ -39,7 +40,8 @@ const NavGroup = ({ title, items }) => {
 };
 
 NavGroup.propTypes = {
-  item: PropTypes.object
+  title: PropTypes.string,
+  items: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default NavGroup;
