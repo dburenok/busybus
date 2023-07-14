@@ -1,22 +1,23 @@
-const Routes = require("../model/busRoute");
+const Route = require("../model/busRoute");
+const Stop = require("../model/busStop");
+const isNil = require("../utils");
 
-// GET all routes
 const getRoutes = async (req, res) => {
-    const routes = await Routes.find({});
-    res.status(200).json(routes);
-}
+  const routes = await Route.find({});
+  res.json(routes);
+};
 
-// GET a specific RouteNo
 const findRoute = async (req, res) => {
-    const routeNo = req.params.id;
-    console.log(routeNo);
-    try {
-        const route = await Routes.find({RouteNo: routeNo});
-        if (!route) res.status(404).send("No route found")
-        res.status(200).json(route);
-      } catch (error) {
-        res.status
-      }
-}
+  const routeNo = req.params.routeNo;
+  const route = await Route.findOne({ RouteNo: routeNo });
 
-module.exports = {getRoutes, findRoute};
+  if (isNil(route)) {
+    return res.status(404).send("No route found");
+  }
+
+  const stopNos = route["StopNos"].map((stopNo) => `${stopNo}`);
+  const stops = await Stop.find({ StopNo: { $in: stopNos } });
+  res.send(stops);
+};
+
+module.exports = { getRoutes, findRoute };

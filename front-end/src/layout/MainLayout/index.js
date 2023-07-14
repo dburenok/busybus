@@ -3,12 +3,12 @@ import { Outlet } from 'react-router-dom';
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
-import { AppBar, Box, CssBaseline, Toolbar, useMediaQuery } from '@mui/material';
+import { AppBar, Box, CssBaseline, Toolbar } from '@mui/material';
 
 // project imports
 import Header from './Header';
 import Sidebar from './Sidebar';
-import { drawerWidth } from '../../store/constant';
+import { drawerWidth } from '../../store/constants';
 // import { SET_MENU } from '../../store/actionTypes';
 import busyBusSlice from '../../store/BusyBusReducer';
 
@@ -50,12 +50,10 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
 
 const MainLayout = () => {
   const theme = useTheme();
-  const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
-  // Handle left drawer
-  const leftDrawerOpened = useSelector((state) => state.busyBus.opened);
+  const drawerOpened = useSelector((state) => state.busyBus.opened);
   const dispatch = useDispatch();
   const handleLeftDrawerToggle = () => {
-    dispatch(busyBusSlice.actions.setMenu(!leftDrawerOpened));
+    dispatch(busyBusSlice.actions.setMenu(!drawerOpened));
   };
 
   return (
@@ -69,7 +67,7 @@ const MainLayout = () => {
         elevation={0}
         sx={{
           bgcolor: theme.palette.background.default,
-          transition: leftDrawerOpened ? theme.transitions.create('width') : 'none'
+          transition: drawerOpened ? theme.transitions.create('width') : 'none'
         }}
       >
         <Toolbar>
@@ -80,12 +78,12 @@ const MainLayout = () => {
       {/* drawer */}
 
       {/* main content */}
-      <Main theme={theme} open={leftDrawerOpened}>
+      <Main theme={theme} open={drawerOpened}>
         {/* breadcrumb */}
         {/* <Breadcrumbs separator={IconChevronRight} navigation={navigation} icon title rightAlign /> */}
         <Outlet />
       </Main>
-      <Sidebar drawerOpen={!matchDownMd ? leftDrawerOpened : !leftDrawerOpened} drawerToggle={handleLeftDrawerToggle} />
+      <Sidebar drawerOpen={drawerOpened} drawerToggle={handleLeftDrawerToggle} />
     </Box>
   );
 };

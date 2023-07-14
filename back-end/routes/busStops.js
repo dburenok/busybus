@@ -3,13 +3,14 @@ const { getStops } = require("../controllers/busStopController");
 const { findStop } = require("../controllers/busStopController");
 const router = express.Router();
 
-// Getting all bus stops
-router.get("/", (req, res) => {
-    getStops(req, res);
+// GET all bus stops
+router.get("/", async (req, res) => {
+  await getStops(req, res);
 });
-// Getting a specific bus stop
-router.get("/:id", (req, res) => {
-    findStop(req, res);
+
+// GET bus stop with given StopNo
+router.get("/:stopNo", async (req, res) => {
+  await findStop(req, res);
 });
 
 module.exports = router;

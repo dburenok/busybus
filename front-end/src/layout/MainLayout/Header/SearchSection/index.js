@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -120,12 +121,17 @@ MobileSearch.propTypes = {
 };
 
 import * as React from 'react';
+import { fetchRoutesAsync, fetchStopsOnRouteAsync } from '../../../../store/thunks';
 
 const SearchAutoComplete = () => {
   const [open, setOpen] = React.useState(false);
-  const busRoutes = useSelector((state) => state.busyBus.commuter.busRoutesSearchResult);
+  const busRoutes = useSelector((state) => state.busyBus.commuter.availableRoutes);
   const loading = false; // open && busRoutes.length === 0;
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchRoutesAsync());
+  }, [dispatch]);
 
   return (
     <Autocomplete
@@ -148,16 +154,12 @@ const SearchAutoComplete = () => {
           return; // control was cleared
         }
 
-        dispatch(busyBusSlice.actions.getBusStopsByRoute(v.route));
+        dispatch(fetchStopsOnRouteAsync({ routeNo: v.route }));
       }}
       renderInput={(params) => (
         <TextField
           {...params}
           label="Enter bus route here... (ex. 49)"
-          onChange={(e) => {
-            // fired when text input is changed
-            dispatch(busyBusSlice.actions.getBusRouteByName(e.target.value));
-          }}
           InputProps={{
             ...params.InputProps,
             endAdornment: (

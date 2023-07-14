@@ -1,9 +1,7 @@
-// action - state management
-// import * as actionTypes from './actionTypes';
 import { createSlice } from '@reduxjs/toolkit';
-import { v4 as uuidv4 } from 'uuid';
-import dummyBusStopData from './bus_stops.json';
-import { BUS_CAPACITY_LEVEL } from './constant';
+import { v4 as uuid } from 'uuid';
+import { BUS_CAPACITY_LEVEL } from './constants';
+import { fetchRoutesAsync, fetchStopsOnRouteAsync } from './thunks';
 
 export const initialState = {
   isOpen: [], // for active default menu
@@ -15,7 +13,8 @@ export const initialState = {
     selectedRoute: '',
     selectedBusStopNum: '',
     upComingBuses: {},
-    selectedBusId: ''
+    selectedBusId: '',
+    availableRoutes: []
   },
   passenger: {
     busesNearBy: [],
@@ -26,23 +25,12 @@ export const initialState = {
 };
 
 // ==============================|| CUSTOMIZATION REDUCER ||============================== //
-
 const busyBusSlice = createSlice({
-  name: 'groceries',
+  name: 'busyBus',
   initialState: initialState,
   reducers: {
     setMenu: (state, action) => {
       state.opened = action.payload;
-    },
-    getBusRouteByName: (state) => {
-      state.commuter.busRoutesSearchResult = [
-        {
-          route: '049'
-        }
-      ];
-    },
-    getBusStopsByRoute: (state, action) => {
-      state.commuter.busStopsSearchResult = dummyBusStopData.stops.filter((busStop) => busStop['Routes'].includes(action.payload));
     },
     clearUpcomingBuses: (state) => {
       state.commuter.busStopsSearchResult = [];
@@ -51,25 +39,34 @@ const busyBusSlice = createSlice({
       state.commuter.upComingBuses = {
         49: [
           {
-            id: uuidv4(),
+            id: uuid(),
             estimateTime: 2,
             capacity: BUS_CAPACITY_LEVEL.FULL
           },
           {
-            id: uuidv4(),
+            id: uuid(),
             estimateTime: 11,
             capacity: BUS_CAPACITY_LEVEL.FULL
           }
         ],
         R4: [
           {
-            id: uuidv4(),
+            id: uuid(),
             estimateTime: 5,
             capacity: BUS_CAPACITY_LEVEL.BUSY
           }
         ]
       };
     }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchRoutesAsync.fulfilled, (state, action) => {
+      state.commuter.availableRoutes = action.payload.map((route) => ({ route: route['RouteNo'] }));
+    });
+    builder.addCase(fetchStopsOnRouteAsync.fulfilled, (state, action) => {
+      console.log(action.payload);
+      state.commuter.busStopsSearchResult = action.payload;
+    });
   }
 });
 
