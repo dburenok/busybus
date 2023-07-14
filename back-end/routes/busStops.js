@@ -1,15 +1,15 @@
 const express = require("express");
+const { getStops } = require("../controllers/busStopController");
+const { findStop } = require("../controllers/busStopController");
 const router = express.Router();
 
 // Getting all bus stops
 router.get("/", (req, res) => {
-    // dummy
-    res.send("stub-get-all-stop");
+    getStops(req, res);
 });
 // Getting a specific bus stop
 router.get("/:id", (req, res) => {
-    // dummy
-    res.send(`stub-get-id-stop-${req.params.id}`);
+    findStop(req, res);
 });
 
 module.exports = router;
