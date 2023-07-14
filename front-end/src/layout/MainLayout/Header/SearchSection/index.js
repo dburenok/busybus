@@ -124,7 +124,6 @@ import * as React from 'react';
 const SearchAutoComplete = () => {
   const [open, setOpen] = React.useState(false);
   const busRoutes = useSelector((state) => state.busyBus.commuter.busRoutesSearchResult);
-  console.log(busRoutes);
   const loading = false; // open && busRoutes.length === 0;
   const dispatch = useDispatch();
 
@@ -149,7 +148,7 @@ const SearchAutoComplete = () => {
           return; // control was cleared
         }
 
-        dispatch(busyBusSlice.actions.getBusStopsbyRoute(v.route));
+        dispatch(busyBusSlice.actions.getBusStopsByRoute(v.route));
       }}
       renderInput={(params) => (
         <TextField
@@ -157,7 +156,7 @@ const SearchAutoComplete = () => {
           label="Enter bus route here... (ex. 49)"
           onChange={(e) => {
             // fired when text input is changed
-            dispatch(busyBusSlice.actions.getBusRoutebyName(e.target.value));
+            dispatch(busyBusSlice.actions.getBusRouteByName(e.target.value));
           }}
           InputProps={{
             ...params.InputProps,

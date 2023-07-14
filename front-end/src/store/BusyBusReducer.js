@@ -1,9 +1,9 @@
 // action - state management
 // import * as actionTypes from './actionTypes';
 import { createSlice } from '@reduxjs/toolkit';
+import { v4 as uuidv4 } from 'uuid';
 import dummyBusStopData from './bus_stops.json';
 import { BUS_CAPACITY_LEVEL } from './constant';
-import { v4 as uuidv4 } from 'uuid';
 
 export const initialState = {
   isOpen: [], // for active default menu
@@ -21,7 +21,7 @@ export const initialState = {
     busesNearBy: [],
     currentBus: {},
     latitude: '',
-    longtitude: ''
+    longitude: ''
   }
 };
 
@@ -34,21 +34,20 @@ const busyBusSlice = createSlice({
     setMenu: (state, action) => {
       state.opened = action.payload;
     },
-    getBusRoutebyName: (state) => {
+    getBusRouteByName: (state) => {
       state.commuter.busRoutesSearchResult = [
         {
           route: '049'
         }
       ];
     },
-    getBusStopsbyRoute: (state, action) => {
-      const data = dummyBusStopData.stops.filter((busStop) => busStop.Routes.includes(action.payload));
-      state.commuter.busStopsSearchResult = data;
+    getBusStopsByRoute: (state, action) => {
+      state.commuter.busStopsSearchResult = dummyBusStopData.stops.filter((busStop) => busStop['Routes'].includes(action.payload));
     },
     clearUpcomingBuses: (state) => {
       state.commuter.busStopsSearchResult = [];
     },
-    getUpcomingBusesbyBusStop: (state) => {
+    getUpcomingBusesByBusStop: (state) => {
       state.commuter.upComingBuses = {
         49: [
           {

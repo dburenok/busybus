@@ -29,7 +29,7 @@ export function BusMap() {
             longitude={busStop['Longitude']}
             anchor="center"
             onClick={() => {
-              dispatch(busyBusSlice.actions.getUpcomingBusesbyBusStop());
+              dispatch(busyBusSlice.actions.getUpcomingBusesByBusStop());
               dispatch(busyBusSlice.actions.setMenu(true));
             }}
           >
