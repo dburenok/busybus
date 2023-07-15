@@ -4,7 +4,6 @@ import { combineReducers } from 'redux';
 import busyBusReducer from './BusyBusReducer';
 
 // ==============================|| COMBINE REDUCER ||============================== //
-
 const reducer = combineReducers({
   busyBus: busyBusReducer.reducer
 });

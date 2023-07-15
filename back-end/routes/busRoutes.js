@@ -1,20 +1,21 @@
 const express = require("express");
 const { getRoutes, findRoute } = require("../controllers/busRouteController");
-const { find } = require("../model/busRoute");
 const router = express.Router();
 
-// Getting all bus routes
-router.get("/", (req, res) => {
-    getRoutes(req, res);
+// GET all routes
+router.get("/", async (req, res) => {
+  await getRoutes(req, res);
 });
-// Getting a specific bus route
-router.get("/:id", (req, res) => {
-    findRoute(req, res);
+
+// GET route with given RouteNo
+router.get("/:routeNo", async (req, res) => {
+  await findRoute(req, res);
 });
-// Updating one bus route
-router.patch("/:id", (req, res) => {
-    // Stub - not implemented, can use this for updating a bus route capacity
-    res.send("stub-patch");
+
+// Update route with given RouteNo/id
+router.patch("/:routeNo", (req, res) => {
+  // Stub - not implemented, can use this for updating a bus route capacity
+  res.send("stub-patch");
 });
 
 module.exports = router;
