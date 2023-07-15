@@ -3,6 +3,7 @@ export const SET_MENU = '@busyBus/SET_MENU';
 export const MENU_TOGGLE = '@busyBus/MENU_TOGGLE'; // not in use
 export const MENU_OPEN = '@busyBus/MENU_OPEN'; // LogoSection, not in use
 
+export const FETCH_BUS_ROUTES = '@busyBus/FETCH_BUS_ROUTES';
 export const SEARCH_BUS_ROUTE = '@busyBus/SEARCH_BUS_ROUTE';
 export const SEARCH_BUS_STOP = '@busyBus/SEARCH_BUS_STOP';
 export const GET_BUS_STOPS_BY_ROUTE = '@busyBus/GET_BUS_STOPS_BY_ROUTE';
