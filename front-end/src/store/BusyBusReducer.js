@@ -1,20 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { v4 as uuid } from 'uuid';
-import { BUS_CAPACITY_LEVEL } from './constants';
-import { fetchRoutesAsync, fetchStopsOnRouteAsync } from './thunks';
+// import { v4 as uuid } from 'uuid';
+// import { BUS_CAPACITY_LEVEL } from './constants';
+import { fetchBusesOnStopAsync, fetchRoutesAsync, fetchStopRouteEstimatesAsync, fetchStopsOnRouteAsync } from './thunks';
 
 export const initialState = {
-  isOpen: [], // for active default menu
   defaultId: 'default',
   opened: false,
   commuter: {
     busRoutesSearchResult: [],
     busStopsSearchResult: [],
     selectedRoute: '',
-    selectedBusStopNum: '',
-    upComingBuses: {},
+    selectedBusStop: {},
+    stopRoutesList: [],
     selectedBusId: '',
-    availableRoutes: []
+    availableRoutes: [],
+    busesToShow: [],
+    estimates: []
   },
   passenger: {
     busesNearBy: [],
@@ -24,39 +25,22 @@ export const initialState = {
   }
 };
 
-// ==============================|| CUSTOMIZATION REDUCER ||============================== //
 const busyBusSlice = createSlice({
   name: 'busyBus',
   initialState: initialState,
   reducers: {
-    setMenu: (state, action) => {
+    setShowSidebar: (state, action) => {
       state.opened = action.payload;
     },
-    clearUpcomingBuses: (state) => {
+    clearStopsAndBuses: (state) => {
       state.commuter.busStopsSearchResult = [];
+      state.commuter.busesToShow = [];
     },
-    getUpcomingBusesByBusStop: (state) => {
-      state.commuter.upComingBuses = {
-        49: [
-          {
-            id: uuid(),
-            estimateTime: 2,
-            capacity: BUS_CAPACITY_LEVEL.FULL
-          },
-          {
-            id: uuid(),
-            estimateTime: 11,
-            capacity: BUS_CAPACITY_LEVEL.FULL
-          }
-        ],
-        R4: [
-          {
-            id: uuid(),
-            estimateTime: 5,
-            capacity: BUS_CAPACITY_LEVEL.BUSY
-          }
-        ]
-      };
+    setSelectedRoute: (state, action) => {
+      state.commuter.selectedRoute = action.payload;
+    },
+    setSelectedBusStop: (state, action) => {
+      state.commuter.selectedBusStop = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -64,11 +48,23 @@ const busyBusSlice = createSlice({
       state.commuter.availableRoutes = action.payload.map((route) => ({ route: route['RouteNo'] }));
     });
     builder.addCase(fetchStopsOnRouteAsync.fulfilled, (state, action) => {
-      console.log(action.payload);
       state.commuter.busStopsSearchResult = action.payload;
+    });
+    builder.addCase(fetchBusesOnStopAsync.fulfilled, (state, action) => {
+      state.commuter.busesToShow = action.payload;
+      state.commuter.stopRoutesList = getRoutesFromBuses(action.payload);
+    });
+    builder.addCase(fetchStopRouteEstimatesAsync.fulfilled, (state, action) => {
+      state.commuter.estimates = action.payload;
     });
   }
 });
 
 export default busyBusSlice;
-// should be modified to busyBusSlice.reducer once the reducers are moved to extraReducers
+
+function getRoutesFromBuses(buses) {
+  const routes = buses.map((bus) => bus['RouteNo']);
+  const uniqueRoutes = [...new Set(routes)];
+
+  return uniqueRoutes.map((route) => ({ route }));
+}

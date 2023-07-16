@@ -22,6 +22,8 @@ const NavItem = ({ item }) => {
   const matchesSM = useMediaQuery(theme.breakpoints.down('lg'));
   const selectedBus = useSelector((state) => state.busyBus.commuter.selectedBusId);
 
+  const { ExpectedCountdown } = item;
+
   const Icon = item.icon;
   const itemIcon = item?.icon ? (
     <Icon stroke={1.5} size="1.3rem" />
@@ -69,7 +71,7 @@ const NavItem = ({ item }) => {
       <ListItemText
         primary={
           <Typography variant={selectedBus === item.id ? 'h5' : 'body1'} color="inherit">
-            {'Estimate time: ' + item.estimateTime + 'min'}
+            {`Leaves in ${ExpectedCountdown}min`}
           </Typography>
         }
         secondary={
