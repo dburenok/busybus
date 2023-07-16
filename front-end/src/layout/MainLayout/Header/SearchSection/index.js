@@ -126,7 +126,7 @@ import { fetchRoutesAsync, fetchStopsOnRouteAsync } from '../../../../store/thun
 const SearchAutoComplete = () => {
   const [open, setOpen] = React.useState(false);
   const busRoutes = useSelector((state) => state.busyBus.commuter.availableRoutes);
-  const loading = false;
+  const loading = false; // open && busRoutes.length === 0;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -149,8 +149,8 @@ const SearchAutoComplete = () => {
       loading={loading}
       onChange={(event, v) => {
         if (v === null) {
-          dispatch(busyBusSlice.actions.setShowSidebar(false)); // hide sidebar
-          dispatch(busyBusSlice.actions.clearStopsAndBuses());
+          dispatch(busyBusSlice.actions.setMenu(false)); // hide sidebar
+          dispatch(busyBusSlice.actions.clearUpcomingBuses());
           return; // control was cleared
         }
 

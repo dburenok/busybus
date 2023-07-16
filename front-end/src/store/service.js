@@ -14,19 +14,9 @@ const fetchStopsOnRoute = async ({ routeNo }) => {
   return response.json();
 };
 
-const fetchBusesOnStop = async ({ busStop }) => {
-  const stopNo = busStop['StopNo'];
-  const response = await fetch(`http://localhost:3001/stops/${stopNo}/buses`, {
-    method: 'GET'
-  });
-
-  return response.json();
-};
-
 const BusyBusService = {
   fetchRoutes,
-  fetchStopsOnRoute,
-  fetchBusesOnStop
+  fetchStopsOnRoute
 };
 
 export default BusyBusService;

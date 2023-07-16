@@ -7,8 +7,6 @@ import NavGroup from './NavGroup';
 const MenuList = () => {
   const busGroups = useSelector((state) => state.busyBus.commuter.upComingBuses);
 
-  console.log({ busGroups });
-
   const navGroups = [];
   for (const busGroup in busGroups) {
     navGroups.push(<NavGroup key={busGroup} title={busGroup} items={busGroups[busGroup]} />);

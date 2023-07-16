@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { v4 as uuid } from 'uuid';
 import { BUS_CAPACITY_LEVEL } from './constants';
-import { fetchBusesOnStopAsync, fetchRoutesAsync, fetchStopsOnRouteAsync } from './thunks';
+import { fetchRoutesAsync, fetchStopsOnRouteAsync } from './thunks';
 
 export const initialState = {
   isOpen: [], // for active default menu
@@ -14,8 +14,7 @@ export const initialState = {
     selectedBusStopNum: '',
     upComingBuses: {},
     selectedBusId: '',
-    availableRoutes: [],
-    busesToShow: []
+    availableRoutes: []
   },
   passenger: {
     busesNearBy: [],
@@ -30,23 +29,13 @@ const busyBusSlice = createSlice({
   name: 'busyBus',
   initialState: initialState,
   reducers: {
-    setShowSidebar: (state, action) => {
+    setMenu: (state, action) => {
       state.opened = action.payload;
     },
-    clearStopsAndBuses: (state) => {
+    clearUpcomingBuses: (state) => {
       state.commuter.busStopsSearchResult = [];
-      state.commuter.busesToShow = [];
-    }
-  },
-  extraReducers: (builder) => {
-    builder.addCase(fetchRoutesAsync.fulfilled, (state, action) => {
-      state.commuter.availableRoutes = action.payload.map((route) => ({ route: route['RouteNo'] }));
-    });
-    builder.addCase(fetchStopsOnRouteAsync.fulfilled, (state, action) => {
-      state.commuter.busStopsSearchResult = action.payload;
-    });
-    builder.addCase(fetchBusesOnStopAsync.fulfilled, (state, action) => {
-      state.commuter.busesToShow = action.payload;
+    },
+    getUpcomingBusesByBusStop: (state) => {
       state.commuter.upComingBuses = {
         49: [
           {
@@ -68,6 +57,15 @@ const busyBusSlice = createSlice({
           }
         ]
       };
+    }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchRoutesAsync.fulfilled, (state, action) => {
+      state.commuter.availableRoutes = action.payload.map((route) => ({ route: route['RouteNo'] }));
+    });
+    builder.addCase(fetchStopsOnRouteAsync.fulfilled, (state, action) => {
+      console.log(action.payload);
+      state.commuter.busStopsSearchResult = action.payload;
     });
   }
 });

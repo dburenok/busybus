@@ -3,18 +3,14 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const Bus = require("./model/bus");
 require("dotenv").config();
 
 const MONGO_USER = process.env.BUSYBUS_MONGO_USER;
 const MONGO_PASS = process.env.BUSYBUS_MONGO_PASS;
-const mongoose_uri = `mongodb+srv://${MONGO_USER}:${MONGO_PASS}@busybuscluster0.eybkfr8.mongodb.net/dev?retryWrites=true&w=majority`;
-const API_KEY = process.env.TRANSLINK_API_KEY;
-const API_BASE_URL = "https://api.translink.ca/rttiapi/v1";
+const mongoose_uri = `mongodb+srv://${MONGO_USER}:${MONGO_PASS}@busybuscluster0.eybkfr8.mongodb.net/busybus?retryWrites=true&w=majority`;
 
 const stopsRouter = require("./routes/busStops");
 const routesRouter = require("./routes/busRoutes");
-const axios = require("axios");
 
 const app = express();
 
@@ -34,17 +30,4 @@ app.use(cors());
 app.use("/stops", stopsRouter);
 app.use("/routes", routesRouter);
 
-setInterval(fetchBuses, 60000);
-
 module.exports = app;
-
-async function fetchBuses() {
-  const requestString = `${API_BASE_URL}/buses?apikey=${API_KEY}`;
-  const response = await axios.get(requestString);
-  const buses = response.data;
-
-  await Bus.deleteMany({});
-  await Bus.insertMany(buses);
-
-  console.log(`Fetched and saved ${buses.length} buses to MongoDB`);
-}

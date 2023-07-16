@@ -1,8 +1,14 @@
+import PropTypes from 'prop-types';
+
+// material-ui
 import { useTheme } from '@mui/material/styles';
 import { Avatar, Box, ButtonBase } from '@mui/material';
+
+// project imports
 import SearchSection from './SearchSection';
+
+// assets
 import { IconMenu2 } from '@tabler/icons';
-import PropTypes from 'prop-types';
 
 // ==============================|| MAIN NAVBAR / HEADER ||============================== //
 
@@ -14,7 +20,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
       {/* toggler button */}
       <Box
         sx={{
-          width: 100,
+          width: 228,
           display: 'flex',
           [theme.breakpoints.down('md')]: {
             width: 'auto'
@@ -43,6 +49,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
         </ButtonBase>
       </Box>
 
+      {/* header search */}
       <SearchSection />
     </>
   );

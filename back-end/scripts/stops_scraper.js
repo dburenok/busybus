@@ -3,9 +3,8 @@ const { MongoClient, ServerApiVersion } = require("mongodb");
 
 const MONGO_USER = process.env.BUSYBUS_MONGO_USER;
 const MONGO_PASS = process.env.BUSYBUS_MONGO_PASS;
-const uri = `mongodb+srv://${MONGO_USER}:${MONGO_PASS}@busybuscluster0.eybkfr8.mongodb.net/dev?retryWrites=true&w=majority`;
 const API_KEY = process.env.TRANSLINK_API_KEY;
-
+const uri = `mongodb+srv://${MONGO_USER}:${MONGO_PASS}@busybuscluster0.eybkfr8.mongodb.net/?retryWrites=true&w=majority`;
 const scrapedBusStops = new Map();
 const step = 0.02;
 const totalRequests = 270;
@@ -48,10 +47,10 @@ const client = new MongoClient(uri, {
   }
 
   const busStopsObject = Object.fromEntries(scrapedBusStops);
-  const stopsCollection = client.db("dev").collection("bus-stop");
+  const collection = client.db("busybus").collection("stops");
   await Promise.all(
     Object.entries(busStopsObject).map(([_id, busStop]) =>
-      stopsCollection.updateOne({ _id }, { $set: busStop }, { upsert: true })
+      collection.updateOne({ _id }, { $set: busStop }, { upsert: true })
     )
   );
   console.log(`DONE. Scraped ${Object.keys(busStopsObject).length} stops`);
