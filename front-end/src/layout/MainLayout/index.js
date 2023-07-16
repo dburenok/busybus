@@ -53,7 +53,7 @@ const MainLayout = () => {
   const drawerOpened = useSelector((state) => state.busyBus.opened);
   const dispatch = useDispatch();
   const handleLeftDrawerToggle = () => {
-    dispatch(busyBusSlice.actions.setMenu(!drawerOpened));
+    dispatch(busyBusSlice.actions.setShowSidebar(!drawerOpened));
   };
 
   return (
