@@ -17,8 +17,6 @@ const labels = {
   5: constants.BUS_CAPACITY_LEVEL.FULL
 };
 
-
-
 function getHoverLabelText(value) {
   return `${labels[value]}`;
 }
@@ -32,18 +30,18 @@ const StyledRating = styled(Rating)({
   }
 });
 
-export default function CapacityRatings({busNo}) {
+export default function CapacityRatings({ busNo }) {
   const [value, setValue] = React.useState(-1);
   const [hover, setHover] = React.useState(-1);
   const dispatch = useDispatch();
   let selectedBusCapacity = useSelector((state) => state.busyBus.commuter.selectedBusCapacity).roundedAvgCapacity;
-  const usefulReportCount =  useSelector((state) => state.busyBus.commuter.selectedBusCapacity).countUsefulReport;
+  const usefulReportCount = useSelector((state) => state.busyBus.commuter.selectedBusCapacity).countUsefulReport;
   const handleBusCapacityReport = () => {
-    dispatch(reportBusCapacityAysnc({busNo, capacityLevel:value}));
+    dispatch(reportBusCapacityAysnc({ busNo, capacityLevel: value }));
   };
-  
+
   function getReadOnlyLabelText(value) {
-    if (value === -1 || value === undefined) return "no report";
+    if (value === -1 || value === undefined) return 'no report';
     return `Out of ${usefulReportCount} report`;
   }
 
@@ -52,27 +50,25 @@ export default function CapacityRatings({busNo}) {
   }
 
   return (
-    <Stack
-    spacing={1}
-    >
+    <Stack spacing={1}>
       <Typography gutterBottom>Current Capacity:</Typography>
       <Box
-      sx={{
-        width: 200,
-        display: 'flex',
-        alignItems: 'center',
-      }}
-    >
-      <StyledRating
-        value={selectedBusCapacity < 0? 0 : selectedBusCapacity}
-        precision={0.5}
-        readOnly
-        icon={<FontAwesomeIcon icon={faPerson} />}
-        emptyIcon={<FontAwesomeIcon icon={faPerson} />}
-      />
-      <Box sx={{ ml: 2 }}>{getReadOnlyLabelText(selectedBusCapacity)}</Box>
-    </Box>
-      
+        sx={{
+          width: 200,
+          display: 'flex',
+          alignItems: 'center'
+        }}
+      >
+        <StyledRating
+          value={selectedBusCapacity < 0 ? 0 : selectedBusCapacity}
+          precision={0.5}
+          readOnly
+          icon={<FontAwesomeIcon icon={faPerson} />}
+          emptyIcon={<FontAwesomeIcon icon={faPerson} />}
+        />
+        <Box sx={{ ml: 2 }}>{getReadOnlyLabelText(selectedBusCapacity)}</Box>
+      </Box>
+
       <Typography gutterBottom>Report Capacity:</Typography>
       <Box
         sx={{
@@ -98,7 +94,7 @@ export default function CapacityRatings({busNo}) {
         {value !== null && <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>}
       </Box>
       <Button autoFocus onClick={handleBusCapacityReport}>
-          Save changes
+        Save changes
       </Button>
     </Stack>
   );

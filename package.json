@@ -1,0 +1,15 @@
+{
+  "name": "busybus",
+  "version": "1.0.0",
+  "description": "Group members: Dmitriy B., Dennis F., Lisa L. and Brendon S.",
+  "main": "index.js",
+  "scripts": {
+    "build:client": "cd front-end && npm install && npm run build",
+    "start:client": "cd front-end && npm run start",
+    "build:backend": "cd back-end && npm install",
+    "start:backend": "cd back-end && npm run start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

@@ -1,5 +1,4 @@
 const BusStop = require("../model/bus-stop");
-const Bus = require("../model/bus");
 const SearchHistory = require("../model/search-history");
 const isNil = require("../utils");
 
@@ -30,14 +29,4 @@ const findStop = async (req, res) => {
   }
 };
 
-const getBusesOnStop = async (req, res) => {
-  const stopNo = req.params.stopNo;
-  const stop = await BusStop.findOne({ StopNo: stopNo });
-
-  const routes = stop["Routes"].split(", ").filter((route) => route !== "");
-  const busesOnRoutes = await Bus.find({ RouteNo: { $in: routes } });
-
-  res.json(busesOnRoutes);
-};
-
-module.exports = { getStops, findStop, getBusesOnStop };
+module.exports = { getStops, findStop };

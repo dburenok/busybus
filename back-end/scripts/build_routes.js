@@ -33,6 +33,8 @@ const client = new MongoClient(uri, {
   const busStopsOnRouteCollection = client
     .db("dev")
     .collection("bus-stops-on-route");
+  await busStopsOnRouteCollection.deleteMany({});
+
   await Promise.all(
     Object.entries(routeObject).map(([route, busStopsArray]) =>
       busStopsOnRouteCollection.updateOne(

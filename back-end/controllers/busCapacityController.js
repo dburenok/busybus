@@ -1,30 +1,6 @@
 const BusCapacity = require("../model/bus-capacity");
-const isNil = require("../utils");
-const Interval_limit = 30;
 
 const getBusCapacity = async (req, res) => {
-  // remove outdated capacity info
-  let oldBusCapacity = await BusCapacity.aggregate([
-    {
-      $addFields: {
-        reportTimeDiff: {
-          $dateDiff: {
-            startDate: "$ReportTime",
-            endDate: "$$NOW",
-            unit: "minute",
-          },
-        },
-      },
-    },
-    {
-      $match: { reportTimeDiff: { $gt: Interval_limit } },
-    },
-  ]);
-  oldBusCapacity = oldBusCapacity.map(function (bus) {
-    return bus.VehicleNo;
-  });
-  await BusCapacity.deleteMany({ VehicleNo: { $in: oldBusCapacity } });
-
   // find average capacity level of the bus and round it to 1 decimal place
   const busNo = req.params.busNo;
   const capacity = await BusCapacity.aggregate([
@@ -55,9 +31,11 @@ const getBusCapacity = async (req, res) => {
   ]);
 
   if (capacity.length === 0) {
-    return res.status(200).send({ _id: busNo, avgCapacity: -1, countUsefulReport: 0 });
+    return res
+      .status(200)
+      .send({ _id: busNo, avgCapacity: -1, countUsefulReport: 0 });
   } else {
-    let obj = {...capacity[0], ...usefulInfoCount[0]}
+    let obj = { ...capacity[0], ...usefulInfoCount[0] };
     return res.status(200).send(obj);
   }
 };
