@@ -1,11 +1,14 @@
 const express = require("express");
-const { getBusCapacity, postBusCapacity } = require("../controllers/busCapacityController");
+const {
+  getBusCapacity,
+  postBusCapacity,
+} = require("../controllers/busCapacityController");
 const router = express.Router();
 
-// GET 
+// GET
 router.get("/:busNo", async (req, res) => {
-    await getBusCapacity(req, res);
-  });
+  await getBusCapacity(req, res);
+});
 
 router.post("/:busNo", async (req, res) => {
   await postBusCapacity(req, res);

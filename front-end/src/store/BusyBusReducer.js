@@ -1,7 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 // import { v4 as uuid } from 'uuid';
 // import { BUS_CAPACITY_LEVEL } from './constants';
-import { fetchBusesOnStopAsync, fetchRoutesAsync, fetchStopRouteEstimatesAsync, fetchStopsOnRouteAsync, fetchBusCapacityAsync } from './thunks';
+import {
+  fetchBusesOnRouteAsync,
+  fetchRoutesAsync,
+  fetchStopRouteEstimatesAsync,
+  fetchStopsOnRouteAsync,
+  fetchBusCapacityAsync
+} from './thunks';
 
 export const initialState = {
   defaultId: 'default',
@@ -34,7 +40,7 @@ const busyBusSlice = createSlice({
     setShowSidebar: (state, action) => {
       state.opened = action.payload;
     },
-    setShowBusPopUp:  (state, action) => {
+    setShowBusPopUp: (state, action) => {
       state.busPopupOpened = action.payload;
     },
     clearStopsAndBuses: (state) => {
@@ -55,7 +61,7 @@ const busyBusSlice = createSlice({
     builder.addCase(fetchStopsOnRouteAsync.fulfilled, (state, action) => {
       state.commuter.busStopsSearchResult = action.payload;
     });
-    builder.addCase(fetchBusesOnStopAsync.fulfilled, (state, action) => {
+    builder.addCase(fetchBusesOnRouteAsync.fulfilled, (state, action) => {
       state.commuter.busesToShow = action.payload;
       state.commuter.stopRoutesList = getRoutesFromBuses(action.payload);
     });

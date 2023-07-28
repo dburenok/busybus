@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
   FETCH_ROUTES,
-  FETCH_BUSES_ON_STOP,
+  FETCH_BUSES_ON_ROUTE,
   FETCH_STOP_ON_ROUTE,
   FETCH_ESTIMATE,
   FETCH_BUS_CAPACITY,
@@ -17,8 +17,8 @@ export const fetchStopsOnRouteAsync = createAsyncThunk(FETCH_STOP_ON_ROUTE, asyn
   return await BusyBusService.fetchStopsOnRoute({ routeNo });
 });
 
-export const fetchBusesOnStopAsync = createAsyncThunk(FETCH_BUSES_ON_STOP, async ({ busStop }) => {
-  return await BusyBusService.fetchBusesOnStop({ busStop });
+export const fetchBusesOnRouteAsync = createAsyncThunk(FETCH_BUSES_ON_ROUTE, async ({ selectedRoute }) => {
+  return await BusyBusService.fetchBusesOnRoute({ selectedRoute });
 });
 
 export const fetchStopRouteEstimatesAsync = createAsyncThunk(FETCH_ESTIMATE, async ({ busStop, selectedRoute }) => {

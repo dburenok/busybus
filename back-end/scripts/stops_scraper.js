@@ -49,6 +49,8 @@ const client = new MongoClient(uri, {
 
   const busStopsObject = Object.fromEntries(scrapedBusStops);
   const stopsCollection = client.db("dev").collection("bus-stop");
+  await stopsCollection.deleteMany({});
+
   await Promise.all(
     Object.entries(busStopsObject).map(([_id, busStop]) =>
       stopsCollection.updateOne({ _id }, { $set: busStop }, { upsert: true })
