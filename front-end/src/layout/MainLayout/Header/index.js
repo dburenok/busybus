@@ -13,10 +13,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
       <Box
         sx={{
           width: 55,
-          display: 'flex',
-          [theme.breakpoints.down('md')]: {
-            width: 'auto'
-          }
+          display: 'flex'
         }}
       >
         <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden' }}>

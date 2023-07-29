@@ -4,7 +4,7 @@ import { faBusAlt, faMapPin, faArrowLeft, faArrowRight, faArrowUp, faArrowDown }
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Map, { Marker } from 'react-map-gl';
 import busyBusSlice from 'store/BusyBusReducer';
-import { fetchBusesOnStopAsync, fetchStopRouteEstimatesAsync, fetchBusCapacityAsync } from '../store/thunks';
+import { fetchBusesOnRouteAsync, fetchStopRouteEstimatesAsync, fetchBusCapacityAsync } from '../store/thunks';
 import CapacityDialog from './CapacityDialog';
 
 const MAP_TOKEN = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
@@ -27,11 +27,14 @@ export function BusMap() {
   const handleBusCapacityDialogToggle = () => {
     dispatch(busyBusSlice.actions.setShowBusPopUp(!dialogOpened));
   };
- 
 
   const handleBusStopClick = (busStop) => {
-    dispatch(fetchBusesOnStopAsync({ busStop }));
+    dispatch(fetchBusesOnRouteAsync({ selectedRoute }));
+    setInterval(() => dispatch(fetchBusesOnRouteAsync({ selectedRoute })), 30000);
+
     dispatch(fetchStopRouteEstimatesAsync({ busStop, selectedRoute }));
+    setInterval(() => dispatch(fetchStopRouteEstimatesAsync({ busStop, selectedRoute })), 30000);
+
     dispatch(busyBusSlice.actions.setSelectedBusStop(busStop));
     dispatch(busyBusSlice.actions.setShowSidebar(true));
   };
@@ -39,7 +42,7 @@ export function BusMap() {
   const handleBusClick = (bus) => {
     setSelectedBus(bus);
     dispatch(busyBusSlice.actions.setShowBusPopUp(true));
-    dispatch(fetchBusCapacityAsync({busNo: bus['VehicleNo']}));
+    dispatch(fetchBusCapacityAsync({ busNo: bus['VehicleNo'] }));
   };
 
   const markers = renderMarkers({
@@ -61,11 +64,7 @@ export function BusMap() {
       >
         {markers}
       </Map>
-      <CapacityDialog
-        dialogOpen={dialogOpened}
-        dialogToggle={handleBusCapacityDialogToggle}
-        bus={selectedBus}
-      />
+      <CapacityDialog dialogOpen={dialogOpened} dialogToggle={handleBusCapacityDialogToggle} bus={selectedBus} />
     </>
   );
 }

@@ -1,6 +1,7 @@
 const BusStopOnRoute = require("../model/bus-stops-on-route");
 const BusStop = require("../model/bus-stop");
 const isNil = require("../utils");
+const Bus = require("../model/bus");
 
 const getRoutes = async (req, res) => {
   const routes = await BusStopOnRoute.find({});
@@ -20,4 +21,11 @@ const findRoute = async (req, res) => {
   res.send(stops);
 };
 
-module.exports = { getRoutes, findRoute };
+const getBusesOnRoute = async (req, res) => {
+  const selectedRoute = req.params.selectedRoute;
+  const busesOnRoutes = await Bus.find({ RouteNo: selectedRoute });
+
+  res.json(busesOnRoutes);
+};
+
+module.exports = { getRoutes, findRoute, getBusesOnRoute };

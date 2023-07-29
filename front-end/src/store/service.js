@@ -1,5 +1,7 @@
+const API_URL = 'https://busybus-back-end.onrender.com';
+
 const fetchRoutes = async () => {
-  const response = await fetch('http://localhost:3001/routes', {
+  const response = await fetch(`${API_URL}/routes`, {
     method: 'GET'
   });
 
@@ -7,16 +9,15 @@ const fetchRoutes = async () => {
 };
 
 const fetchStopsOnRoute = async ({ routeNo }) => {
-  const response = await fetch(`http://localhost:3001/routes/${routeNo}`, {
+  const response = await fetch(`${API_URL}/routes/${routeNo}`, {
     method: 'GET'
   });
 
   return response.json();
 };
 
-const fetchBusesOnStop = async ({ busStop }) => {
-  const stopNo = busStop['StopNo'];
-  const response = await fetch(`http://localhost:3001/stops/${stopNo}/buses`, {
+const fetchBusesOnRoute = async ({ selectedRoute }) => {
+  const response = await fetch(`${API_URL}/routes/${selectedRoute}/buses`, {
     method: 'GET'
   });
 
@@ -25,7 +26,7 @@ const fetchBusesOnStop = async ({ busStop }) => {
 
 const fetchStopRouteEstimates = async ({ busStop, selectedRoute }) => {
   const stopNo = busStop['StopNo'];
-  const response = await fetch(`http://localhost:3001/estimates/${stopNo}/${selectedRoute}`, {
+  const response = await fetch(`${API_URL}/estimates/${stopNo}/${selectedRoute}`, {
     method: 'GET'
   });
 
@@ -33,7 +34,7 @@ const fetchStopRouteEstimates = async ({ busStop, selectedRoute }) => {
 };
 
 const fetchBusCapacity = async ({ busNo }) => {
-  const response = await fetch(`http://localhost:3001/capacity/${busNo}`, {
+  const response = await fetch(`${API_URL}/capacity/${busNo}`, {
     method: 'GET'
   });
 
@@ -41,12 +42,12 @@ const fetchBusCapacity = async ({ busNo }) => {
 };
 
 const reportBusCapacity = async ({ busNo, capacityLevel }) => {
-  const response = await fetch(`http://localhost:3001/capacity/${busNo}`, {
+  const response = await fetch(`${API_URL}/capacity/${busNo}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({capacityLevel: capacityLevel})
+    body: JSON.stringify({ capacityLevel: capacityLevel })
   });
 
   return response.json();
@@ -55,7 +56,7 @@ const reportBusCapacity = async ({ busNo, capacityLevel }) => {
 const BusyBusService = {
   fetchRoutes,
   fetchStopsOnRoute,
-  fetchBusesOnStop,
+  fetchBusesOnRoute,
   fetchStopRouteEstimates,
   fetchBusCapacity,
   reportBusCapacity

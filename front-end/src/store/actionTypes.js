@@ -5,7 +5,7 @@ export const MENU_OPEN = '@busyBus/MENU_OPEN'; // LogoSection, not in use
 
 export const FETCH_ROUTES = '@busyBus/FETCH_ROUTES';
 export const FETCH_STOP_ON_ROUTE = '@busyBus/FETCH_STOP_ON_ROUTE';
-export const FETCH_BUSES_ON_STOP = '@busyBus/FETCH_BUSES_ON_STOP';
+export const FETCH_BUSES_ON_ROUTE = '@busyBus/FETCH_BUSES_ON_ROUTE';
 export const FETCH_ESTIMATE = '@busyBus/FETCH_ESTIMATE';
 export const SEARCH_BUS_STOP = '@busyBus/SEARCH_BUS_STOP';
 export const GET_BUS_STOPS_BY_ROUTE = '@busyBus/GET_BUS_STOPS_BY_ROUTE';

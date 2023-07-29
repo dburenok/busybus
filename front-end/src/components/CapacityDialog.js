@@ -9,7 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import CapacityRatings from './CapacityRating';
 
-import {fetchBusCapacityAsync} from 'store/thunks';
+import { fetchBusCapacityAsync } from 'store/thunks';
 import { useDispatch } from 'react-redux';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -58,14 +58,13 @@ export default function CapacityDialog({ dialogOpen, dialogToggle, bus }) {
 
   return (
     <div>
-      <BootstrapDialog fullWidth
-  maxWidth="xs" onClose={dialogToggle} aria-labelledby="customized-dialog-title" open={dialogOpen}>
+      <BootstrapDialog fullWidth maxWidth="xs" onClose={dialogToggle} aria-labelledby="customized-dialog-title" open={dialogOpen}>
         <BootstrapDialogTitle id="customized-dialog-title" onClose={dialogToggle}>
           {bus['RouteNo'] + '    ' + bus['Direction']}
         </BootstrapDialogTitle>
         <Typography sx={{ m: 0, pl: 2 }}>{'Destination: ' + bus['Destination']}</Typography>
         <DialogContent dividers>
-          <CapacityRatings busNo={bus['VehicleNo']}/>
+          <CapacityRatings busNo={bus['VehicleNo']} />
         </DialogContent>
       </BootstrapDialog>
     </div>
