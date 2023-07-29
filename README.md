@@ -1,6 +1,8 @@
 # BusyBus
 Group members: Dmitriy B., Dennis F., Lisa L. and Brendon S.
 
+Have you... Ever stood at a bus stop wondering where the bus was? Ever had a bus pass by with the words "SORRY, BUS FULL"? This application is for you! See where your bus is and help others anticipate how full future busses are. With a slick mobile UI, this is the modern approach to transit, short of asking ChatGPT
+
 ## Project Progress 1
 #### Project Description
 This project is targeted at Vancouver bus-takers who want to have better control over their transit plans. It will allow users to see the capacity of Translink buses in real-time, and users taking a bus will be able to report the capacity of the current bus they’re on. We plan to store daily and weekly data about transit availability as well as usage data, such as our users’ most common bus stops and bus route numbers. If given enough time, we would like to implement ML-supported data analytics so that users can get notified when their usual route is more or less busy than usual as well as suggestions for alternate routes. Also, we plan to implement a point tracking system which will allow users to earn points when they report data, and consume points when they request bus information. 
