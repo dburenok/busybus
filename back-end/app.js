@@ -15,6 +15,7 @@ const API_BASE_URL = "https://api.translink.ca/rttiapi/v1";
 const stopsRouter = require("./routes/busStops");
 const routesRouter = require("./routes/busRoutes");
 const estimatesRouter = require("./routes/estimates");
+const capacityRouter = require("./routes/busCapacity");
 const axios = require("axios");
 
 const app = express();
@@ -35,6 +36,7 @@ app.use(cors());
 app.use("/stops", stopsRouter);
 app.use("/routes", routesRouter);
 app.use("/estimates", estimatesRouter);
+app.use("/capacity", capacityRouter);
 
 setInterval(fetchBuses, 60000);
 

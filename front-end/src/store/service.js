@@ -32,11 +32,33 @@ const fetchStopRouteEstimates = async ({ busStop, selectedRoute }) => {
   return response.json();
 };
 
+const fetchBusCapacity = async ({ busNo }) => {
+  const response = await fetch(`http://localhost:3001/capacity/${busNo}`, {
+    method: 'GET'
+  });
+
+  return response.json();
+};
+
+const reportBusCapacity = async ({ busNo, capacityLevel }) => {
+  const response = await fetch(`http://localhost:3001/capacity/${busNo}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({capacityLevel: capacityLevel})
+  });
+
+  return response.json();
+};
+
 const BusyBusService = {
   fetchRoutes,
   fetchStopsOnRoute,
   fetchBusesOnStop,
-  fetchStopRouteEstimates
+  fetchStopRouteEstimates,
+  fetchBusCapacity,
+  reportBusCapacity
 };
 
 export default BusyBusService;

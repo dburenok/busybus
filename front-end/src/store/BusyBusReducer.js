@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 // import { v4 as uuid } from 'uuid';
 // import { BUS_CAPACITY_LEVEL } from './constants';
-import { fetchBusesOnStopAsync, fetchRoutesAsync, fetchStopRouteEstimatesAsync, fetchStopsOnRouteAsync } from './thunks';
+import { fetchBusesOnStopAsync, fetchRoutesAsync, fetchStopRouteEstimatesAsync, fetchStopsOnRouteAsync, fetchBusCapacityAsync } from './thunks';
 
 export const initialState = {
   defaultId: 'default',
   opened: false,
+  busPopupOpened: false,
   commuter: {
     busRoutesSearchResult: [],
     busStopsSearchResult: [],
@@ -13,6 +14,7 @@ export const initialState = {
     selectedBusStop: {},
     stopRoutesList: [],
     selectedBusId: '',
+    selectedBusCapacity: 0,
     availableRoutes: [],
     busesToShow: [],
     estimates: []
@@ -31,6 +33,9 @@ const busyBusSlice = createSlice({
   reducers: {
     setShowSidebar: (state, action) => {
       state.opened = action.payload;
+    },
+    setShowBusPopUp:  (state, action) => {
+      state.busPopupOpened = action.payload;
     },
     clearStopsAndBuses: (state) => {
       state.commuter.busStopsSearchResult = [];
@@ -56,6 +61,12 @@ const busyBusSlice = createSlice({
     });
     builder.addCase(fetchStopRouteEstimatesAsync.fulfilled, (state, action) => {
       state.commuter.estimates = action.payload;
+    });
+    builder.addCase(fetchBusCapacityAsync.fulfilled, (state, action) => {
+      state.commuter.selectedBusCapacity = action.payload;
+    });
+    builder.addCase(fetchBusCapacityAsync.rejected, (state) => {
+      state.commuter.selectedBusCapacity = -1;
     });
   }
 });

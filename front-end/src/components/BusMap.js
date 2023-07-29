@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { faBusAlt, faMapPin, faArrowLeft, faArrowRight, faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Map, { Marker } from 'react-map-gl';
 import busyBusSlice from 'store/BusyBusReducer';
-import { fetchBusesOnStopAsync, fetchStopRouteEstimatesAsync } from '../store/thunks';
+import { fetchBusesOnStopAsync, fetchStopRouteEstimatesAsync, fetchBusCapacityAsync } from '../store/thunks';
+import CapacityDialog from './CapacityDialog';
 
 const MAP_TOKEN = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 const initialViewState = {
@@ -19,7 +21,13 @@ export function BusMap() {
   const selectedRoute = useSelector((state) => state.busyBus.commuter.selectedRoute);
   const buses = useSelector((state) => state.busyBus.commuter.busesToShow);
   const selectedBusStop = useSelector((state) => state.busyBus.commuter.selectedBusStop);
+  const dialogOpened = useSelector((state) => state.busyBus.busPopupOpened);
   const dispatch = useDispatch();
+  const [selectedBus, setSelectedBus] = useState({});
+  const handleBusCapacityDialogToggle = () => {
+    dispatch(busyBusSlice.actions.setShowBusPopUp(!dialogOpened));
+  };
+ 
 
   const handleBusStopClick = (busStop) => {
     dispatch(fetchBusesOnStopAsync({ busStop }));
@@ -29,7 +37,9 @@ export function BusMap() {
   };
 
   const handleBusClick = (bus) => {
-    alert(`Clicked on bus ${bus['VehicleNo']} with pattern ${bus['Pattern']}`);
+    setSelectedBus(bus);
+    dispatch(busyBusSlice.actions.setShowBusPopUp(true));
+    dispatch(fetchBusCapacityAsync({busNo: bus['VehicleNo']}));
   };
 
   const markers = renderMarkers({
@@ -41,15 +51,22 @@ export function BusMap() {
   });
 
   return (
-    <Map
-      reuseMaps={true}
-      initialViewState={initialViewState}
-      mapStyle="mapbox://styles/mapbox/streets-v9"
-      mapboxAccessToken={MAP_TOKEN}
-      attributionControl={false}
-    >
-      {markers}
-    </Map>
+    <>
+      <Map
+        reuseMaps={true}
+        initialViewState={initialViewState}
+        mapStyle="mapbox://styles/mapbox/streets-v9"
+        mapboxAccessToken={MAP_TOKEN}
+        attributionControl={false}
+      >
+        {markers}
+      </Map>
+      <CapacityDialog
+        dialogOpen={dialogOpened}
+        dialogToggle={handleBusCapacityDialogToggle}
+        bus={selectedBus}
+      />
+    </>
   );
 }
 
