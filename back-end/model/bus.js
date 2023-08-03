@@ -10,7 +10,7 @@ const busSchema = new mongoose.Schema(
     Pattern: { type: String, required: true },
     Latitude: { type: Number, required: true },
     Longitude: { type: Number, required: true },
-    RecordedTime: { type: String, required: true },
+    ReportTime: { type: Date, required: true, default: Date.now },
   },
   { collection: "bus" }
 );

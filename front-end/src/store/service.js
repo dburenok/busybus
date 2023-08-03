@@ -1,4 +1,7 @@
-const API_URL = 'https://busybus-back-end.onrender.com';
+const LOCAL_API_URL = 'http://localhost:3001';
+const DEPLOYED_API_URL = 'https://busybus-back-end.onrender.com';
+const API_URL = process.env.REACT_APP_BUSY_BUS_ENV === 'dev' ? LOCAL_API_URL : DEPLOYED_API_URL;
+console.log('Using API', API_URL);
 
 const fetchRoutes = async () => {
   const response = await fetch(`${API_URL}/routes`, {

@@ -53,6 +53,7 @@ export function BusMap() {
     handleBusStopClick,
     handleBusClick,
     selectedBusStop,
+    selectedBus,
     showBusStopOnly
   });
 
@@ -96,7 +97,7 @@ function renderBusStopMarker({ busStop, handleBusStopClick, selectedBusStop }) {
   );
 }
 
-function renderBusMarker({ bus, handleBusClick }) {
+function renderBusMarker({ bus, handleBusClick, selectedBus }) {
   return (
     <Marker
       key={bus['VehicleNo']}
@@ -105,32 +106,28 @@ function renderBusMarker({ bus, handleBusClick }) {
       anchor="center"
       onClick={() => handleBusClick(bus)}
     >
-      {getBusWithArrow(bus)}
+      {getBusWithArrow(bus, selectedBus)}
     </Marker>
   );
 }
 
-function renderMarkers({ busStops, buses, handleBusStopClick, handleBusClick, selectedBusStop, showBusStopOnly }) {
+function renderMarkers({ busStops, buses, handleBusStopClick, handleBusClick, selectedBusStop, selectedBus, showBusStopOnly }) {
   if (showBusStopOnly) {
-    return [
-      ...busStops.map((busStop) => renderBusStopMarker({ busStop, handleBusStopClick, selectedBusStop }))
-    ];
-  } else return [
-    ...buses.map((bus) => renderBusMarker({ bus, handleBusClick }))
-  ];
+    return [...busStops.map((busStop) => renderBusStopMarker({ busStop, handleBusStopClick, selectedBusStop }))];
+  } else return [...buses.map((bus) => renderBusMarker({ bus, handleBusClick, selectedBus }))];
 }
 
-function getBusWithArrow(bus) {
+function getBusWithArrow(bus, selectedBus) {
   const direction = bus['Pattern'][0].toUpperCase();
-  const arrowColor = 'black';
   const arrowSize = '1x';
+  const color = selectedBus['VehicleNo'] === bus['VehicleNo'] ? 'orange' : 'black';
 
   const busMarker = (
     <FontAwesomeIcon
       icon={busIcon}
       size="2x"
       style={{
-        color: 'black',
+        color,
         cursor: 'pointer'
       }}
     />
@@ -142,7 +139,7 @@ function getBusWithArrow(bus) {
         <FontAwesomeIcon
           icon={faArrowLeft}
           style={{
-            color: arrowColor,
+            color,
             size: arrowSize
           }}
         />
@@ -158,7 +155,7 @@ function getBusWithArrow(bus) {
         <FontAwesomeIcon
           icon={faArrowRight}
           style={{
-            color: arrowColor,
+            color,
             size: arrowSize
           }}
         />
@@ -173,7 +170,7 @@ function getBusWithArrow(bus) {
         <FontAwesomeIcon
           icon={faArrowUp}
           style={{
-            color: arrowColor,
+            color,
             size: arrowSize
           }}
         />
@@ -187,7 +184,7 @@ function getBusWithArrow(bus) {
       <FontAwesomeIcon
         icon={faArrowDown}
         style={{
-          color: arrowColor,
+          color,
           size: arrowSize
         }}
       />
