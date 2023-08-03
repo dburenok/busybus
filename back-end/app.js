@@ -36,7 +36,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-app.use(cors({ origin: "https://busybus-front-end.onrender.com" }));
+app.use(
+  cors({
+    origin:
+      process.env.BUSY_BUS_ENV === "dev"
+        ? "http://localhost:3000"
+        : "https://busybus-front-end.onrender.com",
+  })
+);
 
 app.use("/stops", stopsRouter);
 app.use("/routes", routesRouter);
