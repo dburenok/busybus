@@ -50,8 +50,7 @@ export function BusMap() {
     buses,
     handleBusStopClick,
     handleBusClick,
-    selectedBusStop,
-    selectedBus
+    selectedBusStop
   });
 
   return (
@@ -94,7 +93,7 @@ function renderBusStopMarker({ busStop, handleBusStopClick, selectedBusStop }) {
   );
 }
 
-function renderBusMarker({ bus, handleBusClick, selectedBus }) {
+function renderBusMarker({ bus, handleBusClick }) {
   return (
     <Marker
       key={bus['VehicleNo']}
@@ -103,30 +102,29 @@ function renderBusMarker({ bus, handleBusClick, selectedBus }) {
       anchor="center"
       onClick={() => handleBusClick(bus)}
     >
-      {getBusWithArrow(bus, selectedBus)}
+      {getBusWithArrow(bus)}
     </Marker>
   );
 }
 
-function renderMarkers({ busStops, buses, handleBusStopClick, handleBusClick, selectedBusStop, selectedBus }) {
+function renderMarkers({ busStops, buses, handleBusStopClick, handleBusClick, selectedBusStop }) {
   return [
     ...busStops.map((busStop) => renderBusStopMarker({ busStop, handleBusStopClick, selectedBusStop })),
-    ...buses.map((bus) => renderBusMarker({ bus, handleBusClick, selectedBus }))
+    ...buses.map((bus) => renderBusMarker({ bus, handleBusClick }))
   ];
 }
 
-function getBusWithArrow(bus, selectedBus) {
+function getBusWithArrow(bus) {
   const direction = bus['Pattern'][0].toUpperCase();
   const arrowColor = 'black';
   const arrowSize = '1x';
-  const color = selectedBus['VehicleNo'] === bus['VehicleNo'] ? 'orange' : 'black';
 
   const busMarker = (
     <FontAwesomeIcon
       icon={busIcon}
       size="2x"
       style={{
-        color,
+        color: 'black',
         cursor: 'pointer'
       }}
     />
