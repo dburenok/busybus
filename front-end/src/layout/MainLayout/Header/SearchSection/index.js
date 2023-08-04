@@ -122,6 +122,14 @@ MobileSearch.propTypes = {
 
 import * as React from 'react';
 import { fetchRoutesAsync, fetchStopsOnRouteAsync } from '../../../../store/thunks';
+import { styled } from '@mui/material/styles';
+import { shouldForwardProp } from '@mui/system';
+const AutocompleteStyle = styled(Autocomplete, { shouldForwardProp })(({ theme }) => ({
+  width: 400,
+  [theme.breakpoints.down('sm')]: {
+      width: 240
+  }
+}));
 
 const SearchAutoComplete = () => {
   const [open, setOpen] = React.useState(false);
@@ -134,8 +142,7 @@ const SearchAutoComplete = () => {
   }, [dispatch]);
 
   return (
-    <Autocomplete
-      sx={{ width: 300 }}
+    <AutocompleteStyle
       open={open}
       onOpen={() => {
         setOpen(true);
@@ -153,7 +160,7 @@ const SearchAutoComplete = () => {
           dispatch(busyBusSlice.actions.clearStopsAndBuses());
           return; // control was cleared
         }
-
+        dispatch(busyBusSlice.actions.setShowBusStopOnly(true));
         dispatch(fetchStopsOnRouteAsync({ routeNo: v.route }));
         dispatch(busyBusSlice.actions.setSelectedRoute(v.route));
       }}

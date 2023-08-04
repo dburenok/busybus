@@ -22,6 +22,7 @@ export function BusMap() {
   const buses = useSelector((state) => state.busyBus.commuter.busesToShow);
   const selectedBusStop = useSelector((state) => state.busyBus.commuter.selectedBusStop);
   const dialogOpened = useSelector((state) => state.busyBus.busPopupOpened);
+  const showBusStopOnly = useSelector((state) => state.busyBus.showBusStopOnly);
   const dispatch = useDispatch();
   const [selectedBus, setSelectedBus] = useState({});
   const handleBusCapacityDialogToggle = () => {
@@ -34,6 +35,7 @@ export function BusMap() {
     dispatch(fetchStopRouteEstimatesAsync({ busStop, selectedRoute }));
     dispatch(busyBusSlice.actions.setSelectedBusStop(busStop));
     dispatch(busyBusSlice.actions.setShowSidebar(true));
+    dispatch(busyBusSlice.actions.setShowBusStopOnly(false));
   };
 
   const handleBusClick = (bus) => {
@@ -47,7 +49,8 @@ export function BusMap() {
     buses,
     handleBusStopClick,
     handleBusClick,
-    selectedBusStop
+    selectedBusStop,
+    showBusStopOnly
   });
 
   return (
@@ -108,9 +111,12 @@ function renderBusMarker({ bus, handleBusClick }) {
   );
 }
 
-function renderMarkers({ busStops, buses, handleBusStopClick, handleBusClick, selectedBusStop }) {
-  return [
-    ...busStops.map((busStop) => renderBusStopMarker({ busStop, handleBusStopClick, selectedBusStop })),
+function renderMarkers({ busStops, buses, handleBusStopClick, handleBusClick, selectedBusStop, showBusStopOnly }) {
+  if (showBusStopOnly) {
+    return [
+      ...busStops.map((busStop) => renderBusStopMarker({ busStop, handleBusStopClick, selectedBusStop }))
+    ];
+  } else return [
     ...buses.map((bus) => renderBusMarker({ bus, handleBusClick }))
   ];
 }
