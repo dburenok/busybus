@@ -15,7 +15,7 @@ const MenuList = () => {
     <>
       <h2>Stop #{stopNo}</h2>
       <h4>Name: {stopName}</h4>
-      <Divider/>
+      <Divider />
       {estimateGroups}
     </>
   );

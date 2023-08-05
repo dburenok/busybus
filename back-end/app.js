@@ -12,9 +12,13 @@ const mongoose_uri = `mongodb+srv://${MONGO_USER}:${MONGO_PASS}@busybuscluster0.
 const API_KEY = process.env.TRANSLINK_API_KEY;
 const API_BASE_URL = "https://api.translink.ca/rttiapi/v1";
 
-const BUS_FETCH_INTERVAL_SEC = 30;
-const REMOVE_OUT_OF_DATE_CAPACITY_INTERVAL_MIN = 5;
-const CAPACITY_INTERVAL_MINS = 30;
+const BUS_FETCH_INTERVAL = 30 * 1000; // 30 seconds
+
+const REMOVE_OUT_OF_DATE_CAPACITY_INTERVAL = 5 * 60 * 1000; // 5 minutes
+const REMOVE_OUT_OF_DATE_BUSES_INTERVAL = 5 * 60 * 1000; // 5 minutes
+
+const BUS_OUTDATED_MINS = 5;
+const CAPACITY_OUTDATED_MINS = 30;
 
 const stopsRouter = require("./routes/busStops");
 const routesRouter = require("./routes/busRoutes");
@@ -36,18 +40,24 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-app.use(cors({ origin: "https://busybus-front-end.onrender.com" }));
+app.use(
+  cors({
+    origin:
+      process.env.BUSY_BUS_ENV === "dev"
+        ? "http://localhost:3000"
+        : "https://busybus-front-end.onrender.com",
+  })
+);
 
 app.use("/stops", stopsRouter);
 app.use("/routes", routesRouter);
 app.use("/estimates", estimatesRouter);
 app.use("/capacity", capacityRouter);
 
-setInterval(fetchBuses, BUS_FETCH_INTERVAL_SEC * 1000);
-setInterval(
-  removeOutOfDateCapacityInfo,
-  REMOVE_OUT_OF_DATE_CAPACITY_INTERVAL_MIN * 60 * 1000
-);
+fetchBuses();
+setInterval(fetchBuses, BUS_FETCH_INTERVAL);
+setInterval(removeOutOfDateBuses, REMOVE_OUT_OF_DATE_BUSES_INTERVAL);
+setInterval(removeOutOfDateCapacityInfo, REMOVE_OUT_OF_DATE_CAPACITY_INTERVAL);
 
 module.exports = app;
 
@@ -56,10 +66,46 @@ async function fetchBuses() {
   const response = await axios.get(requestString);
   const buses = response.data;
 
-  await Bus.deleteMany({});
-  await Bus.insertMany(buses);
+  const ReportTime = new Date();
 
-  console.log(`Fetched and saved ${buses.length} buses to MongoDB`);
+  await Promise.all(
+    buses.map((bus) =>
+      Bus.updateOne(
+        { VehicleNo: bus["VehicleNo"] },
+        { ...bus, ReportTime },
+        { upsert: true }
+      )
+    )
+  );
+
+  console.log(`Updated ${buses.length} buses in MongoDB.`);
+}
+
+async function removeOutOfDateBuses() {
+  let outdatedBuses = await Bus.aggregate([
+    {
+      $addFields: {
+        fetchTimeDiff: {
+          $dateDiff: {
+            startDate: "$ReportTime",
+            endDate: "$$NOW",
+            unit: "minute",
+          },
+        },
+      },
+    },
+    {
+      $match: { fetchTimeDiff: { $gt: BUS_OUTDATED_MINS } },
+    },
+  ]);
+
+  outdatedBuses = outdatedBuses.map((bus) => bus.VehicleNo);
+
+  const removed = await Bus.deleteMany({
+    VehicleNo: { $in: outdatedBuses },
+  });
+
+  console.log(`Removed ${removed.deletedCount} outdated buses.`);
 }
 
 async function removeOutOfDateCapacityInfo() {
@@ -76,7 +122,7 @@ async function removeOutOfDateCapacityInfo() {
       },
     },
     {
-      $match: { reportTimeDiff: { $gt: CAPACITY_INTERVAL_MINS } },
+      $match: { reportTimeDiff: { $gt: CAPACITY_OUTDATED_MINS } },
     },
   ]);
 
@@ -86,5 +132,5 @@ async function removeOutOfDateCapacityInfo() {
     VehicleNo: { $in: outdatedBusCapacity },
   });
 
-  console.log(`Removed ${removed.deletedCount} outdated bus capacities`);
+  console.log(`Removed ${removed.deletedCount} outdated bus capacities.`);
 }

@@ -12,7 +12,7 @@ import { shouldForwardProp } from '@mui/system';
 const AutocompleteStyle = styled(Autocomplete, { shouldForwardProp })(({ theme }) => ({
   width: 400,
   [theme.breakpoints.down('sm')]: {
-      width: 240
+    width: 240
   }
 }));
 

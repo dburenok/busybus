@@ -3,7 +3,7 @@ import { Avatar, Box, ButtonBase } from '@mui/material';
 import SearchSection from './SearchSection';
 import { IconMenu2 } from '@tabler/icons';
 import PropTypes from 'prop-types';
-import MapMarkerSwitch from 'components/MapMarkerSwitch'
+import MapMarkerSwitch from 'components/MapMarkerSwitch';
 
 // ==============================|| MAIN NAVBAR / HEADER ||============================== //
 const Header = ({ handleLeftDrawerToggle }) => {
@@ -40,7 +40,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
       </Box>
 
       <SearchSection />
-      <MapMarkerSwitch/>
+      <MapMarkerSwitch />
     </>
   );
 };

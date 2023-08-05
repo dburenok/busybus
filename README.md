@@ -2,7 +2,7 @@
 
 Group members: Dmitriy B., Dennis F., Lisa L. and Brendon S.
 
-Have you... Ever stood at a bus stop wondering where the bus was? Ever had a bus pass by with the words "SORRY, BUS FULL"? This application is for you! See where your bus is and help others anticipate how full future busses are. With a slick mobile UI, this is the modern approach to transit, short of asking ChatGPT
+Have you... Ever stood at a bus stop wondering where the bus was? Ever had a bus pass by with the words "SORRY, BUS FULL"? This application is for you! See where your bus is and help others anticipate how full future buses are. With a slick mobile UI, this is the modern approach to transit, short of asking ChatGPT.
 
 ## Project Progress 1
 
