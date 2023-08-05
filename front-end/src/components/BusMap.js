@@ -28,13 +28,18 @@ export function BusMap() {
   const handleBusCapacityDialogToggle = () => {
     dispatch(busyBusSlice.actions.setShowBusPopUp(!dialogOpened));
   };
+  const [busesInterval, setBusesInterval] = useState(-1);
+  const [estimatesInterval, setEstimatesInterval] = useState(-1);
 
   const handleBusStopClick = (busStop) => {
+    clearInterval(busesInterval);
+    clearInterval(estimatesInterval);
+
     dispatch(fetchBusesOnRouteAsync({ selectedRoute }));
-    setInterval(() => dispatch(fetchBusesOnRouteAsync({ selectedRoute })), 30000);
+    setBusesInterval(setInterval(() => dispatch(fetchBusesOnRouteAsync({ selectedRoute })), 30000));
 
     dispatch(fetchStopRouteEstimatesAsync({ busStop, selectedRoute }));
-    setInterval(() => dispatch(fetchStopRouteEstimatesAsync({ busStop, selectedRoute })), 30000);
+    setEstimatesInterval(setInterval(() => dispatch(fetchStopRouteEstimatesAsync({ busStop, selectedRoute })), 30000));
 
     dispatch(busyBusSlice.actions.setSelectedBusStop(busStop));
     dispatch(busyBusSlice.actions.setShowSidebar(true));
