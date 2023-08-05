@@ -13,6 +13,7 @@ export const initialState = {
   defaultId: 'default',
   opened: false,
   busPopupOpened: false,
+  showBusStopOnly: true,
   commuter: {
     busRoutesSearchResult: [],
     busStopsSearchResult: [],
@@ -52,6 +53,9 @@ const busyBusSlice = createSlice({
     },
     setSelectedBusStop: (state, action) => {
       state.commuter.selectedBusStop = action.payload;
+    },
+    setShowBusStopOnly: (state, action) => {
+      state.showBusStopOnly = action.payload;
     }
   },
   extraReducers: (builder) => {
