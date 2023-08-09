@@ -6,7 +6,8 @@ import {
   fetchRoutesAsync,
   fetchStopRouteEstimatesAsync,
   fetchStopsOnRouteAsync,
-  fetchBusCapacityAsync
+  fetchBusCapacityAsync,
+  fetchClosestBusStopAsync
 } from './thunks';
 
 export const initialState = {
@@ -24,7 +25,8 @@ export const initialState = {
     selectedBusCapacity: 0,
     availableRoutes: [],
     busesToShow: [],
-    estimates: []
+    estimates: [],
+    closestBusStop: {}
   },
   passenger: {
     busesNearBy: [],
@@ -56,7 +58,10 @@ const busyBusSlice = createSlice({
     },
     setShowBusStopOnly: (state, action) => {
       state.showBusStopOnly = action.payload;
-    }
+    },
+    setClosestBusStop: (state, action) => {
+      state.commuter.closestBusStop = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchRoutesAsync.fulfilled, (state, action) => {
@@ -77,6 +82,9 @@ const busyBusSlice = createSlice({
     });
     builder.addCase(fetchBusCapacityAsync.rejected, (state) => {
       state.commuter.selectedBusCapacity = -1;
+    });
+    builder.addCase(fetchClosestBusStopAsync.fulfilled, (state, action) => {
+      state.commuter.closestBusStop = action.payload;
     });
   }
 });

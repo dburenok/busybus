@@ -1,7 +1,6 @@
 // action - customization reducer
 export const SET_MENU = '@busyBus/SET_MENU';
-export const MENU_TOGGLE = '@busyBus/MENU_TOGGLE'; // not in use
-export const MENU_OPEN = '@busyBus/MENU_OPEN'; // LogoSection, not in use
+export const MENU_OPEN = '@busyBus/MENU_OPEN'; 
 
 export const FETCH_ROUTES = '@busyBus/FETCH_ROUTES';
 export const FETCH_STOP_ON_ROUTE = '@busyBus/FETCH_STOP_ON_ROUTE';
@@ -11,6 +10,7 @@ export const SEARCH_BUS_STOP = '@busyBus/SEARCH_BUS_STOP';
 export const GET_BUS_STOPS_BY_ROUTE = '@busyBus/GET_BUS_STOPS_BY_ROUTE';
 export const GET_UPCOMING_BUSES = '@busyBus/GET_UPCOMING_BUSES';
 export const FETCH_BUS_CAPACITY = '@busyBus/FETCH_BUS_CAPACITY';
+export const FETCH_CLOSEST_BUS_STOP = '@busyBus/FETCH_CLOSEST_BUS_STOP';
 
 // Passenger Actions
 export const GET_PASSENGER_LOCATION = '@busyBus/GET_PASSENGER_LOCATION';
