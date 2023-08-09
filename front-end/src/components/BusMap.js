@@ -93,17 +93,20 @@ export function BusMap() {
         {markers}
         <GeolocateControl
           onGeolocate={(evt) => {
-            let latitude = evt.coords.latitude;
-            let longitude = evt.coords.longitude;
-            setUserCoords([latitude, longitude]);
-            setViewport({
-              latitude: latitude,
-              longitude: longitude,
-              zoom: 3.5
-            });
-            dispatch(fetchClosestBusStopAsync({ latitude, longitude }));
-            dispatch(busyBusSlice.actions.setShowBusStopOnly(true));
-          }}
+            if (selectedRoute === '') {
+              alert("Please Select Route Number First to View the Bus Stop");
+            } else {
+              let latitude = evt.coords.latitude;
+              let longitude = evt.coords.longitude;
+              setUserCoords([latitude, longitude]);
+              setViewport({
+                latitude: latitude,
+                longitude: longitude,
+                zoom: 3.5
+              });
+              dispatch(fetchClosestBusStopAsync({ latitude, longitude, selectedRoute }));
+              dispatch(busyBusSlice.actions.setShowBusStopOnly(true));
+            }}}
           onError={(err) => {
             console.log(err);
           }}

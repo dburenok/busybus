@@ -30,8 +30,8 @@ export const fetchBusCapacityAsync = createAsyncThunk(FETCH_BUS_CAPACITY, async 
   return await BusyBusService.fetchBusCapacity({ busNo });
 });
 
-export const fetchClosestBusStopAsync = createAsyncThunk(FETCH_CLOSEST_BUS_STOP, async ({ latitude, longitude }) => {
-  return await BusyBusService.fetchClosestBusStop({ latitude, longitude });
+export const fetchClosestBusStopAsync = createAsyncThunk(FETCH_CLOSEST_BUS_STOP, async ({ latitude, longitude, selectedRoute }) => {
+  return await BusyBusService.fetchClosestBusStop({ latitude, longitude, selectedRoute });
 });
 
 export const reportBusCapacityAysnc = createAsyncThunk(REPORT_BUS_CAPACITY, async ({ busNo, capacityLevel }) => {

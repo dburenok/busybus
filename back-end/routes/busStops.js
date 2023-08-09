@@ -13,7 +13,7 @@ router.get("/:stopNo", async (req, res) => {
 });
 
 // GET bus stop with given coordinates (latitude, longitude)
-router.get("/:latitude/:longitude", async (req, res) => {
+router.get("/:latitude/:longitude/:routeNo", async (req, res) => {
   await findStopLatLong(req, res);
 });
 module.exports = router;
