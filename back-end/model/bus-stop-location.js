@@ -16,9 +16,9 @@ const busStopLocationSchema = new mongoose.Schema(
     Routes: { type: String, required: true },
     WheelchairAccess: { type: Number, required: true },
     geoloc: {
-        type: { type: String, default: "Point" },
-        coordinates: [Number]
-    }
+      type: { type: String, default: "Point" },
+      coordinates: [Number],
+    },
   },
   { collection: "bus-stop-location" }
 );
