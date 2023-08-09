@@ -102,7 +102,8 @@ export function BusMap() {
         {markers}
       </Map>
       <GeolocateControl 
-      onOutOfMaxBounds={() => {}}/> // Render closest bus and pull out sidebar
+      onGeolocate={() => {}}/> 
+      {/* Render closest bus using regular geolocation API to make bus stop call and pull out sidebar */}
       <CapacityDialog dialogOpen={dialogOpened} dialogToggle={handleBusCapacityDialogToggle} bus={selectedBus} />
     </>
   );
