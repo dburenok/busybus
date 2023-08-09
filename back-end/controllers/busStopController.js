@@ -15,6 +15,8 @@ const findStopLatLong = async (req, res) => {
 
   const routeNo = req.params.routeNo;
   const route = await BusStopOnRoute.findOne({ RouteNo: routeNo });
+  
+  console.log(route)
 
   if (isNil(route)) {
     return res.status(404).send("No route found");
@@ -29,7 +31,7 @@ const findStopLatLong = async (req, res) => {
            type: "Point" ,
            coordinates: [ long , lat ]
         },
-        $maxDistance: 50,
+        $maxDistance: 500,
         $minDistance: 0
       }
     },
