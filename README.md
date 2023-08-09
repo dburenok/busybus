@@ -68,6 +68,12 @@ This project is targeted at Vancouver bus-takers who want to have better control
 - back-end API access to DB
 - back-end DB adaptation to enable geospatial search
 - front-end design for geolocation based stop selection
+##### Dmitriy Burenok:
+- implement mapbox-gl map library
+- create Translink API bus stop scraper
+- integrate client and server to show bus stops for a given route
+- fix mobile search bar
+- highlight selected bus and bus stop
 
 #### Sketch
 
