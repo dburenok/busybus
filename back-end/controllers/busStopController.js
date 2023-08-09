@@ -1,7 +1,7 @@
 const BusStop = require("../model/bus-stop");
 const BusStopLocation = require("../model/bus-stop-location");
 const SearchHistory = require("../model/search-history");
-const BusStopOnRoute = require("../model/bus-stops-on-route");
+const BusStopsOnRoute = require("../model/bus-stops-on-route");
 const isNil = require("../utils");
 
 const getStops = async (req, res) => {
@@ -12,9 +12,9 @@ const getStops = async (req, res) => {
 const findStopLatLong = async (req, res) => {
   const lat = req.params.latitude;
   const long = req.params.longitude;
-
   const routeNo = req.params.routeNo;
-  const route = await BusStopOnRoute.findOne({ RouteNo: routeNo });
+
+  const route = await BusStopsOnRoute.findOne({ RouteNo: routeNo });
 
   if (isNil(route)) {
     return res.status(404).send("No route found");
@@ -26,16 +26,15 @@ const findStopLatLong = async (req, res) => {
     geoloc: {
       $near: {
         $geometry: {
-           type: "Point" ,
-           coordinates: [ long , lat ]
+          type: "Point",
+          coordinates: [long, lat],
         },
-        $maxDistance: 50,
-        $minDistance: 0
-      }
+        $maxDistance: 500,
+        $minDistance: 0,
+      },
     },
-    StopNo: { $in: stopNos}
- });
-
+    StopNo: { $in: stopNos },
+  });
 
   if (isNil(stop)) {
     res.status(404).send("No stops found");
@@ -66,4 +65,4 @@ const findStop = async (req, res) => {
   }
 };
 
-module.exports = { getStops, findStop, findStopLatLong};
+module.exports = { getStops, findStop, findStopLatLong };
