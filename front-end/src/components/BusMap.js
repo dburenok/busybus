@@ -1,22 +1,47 @@
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { faBusAlt, faMapPin, faArrowLeft, faArrowRight, faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Map, { Marker } from 'react-map-gl';
+import Map, { Marker, GeolocateControl} from 'react-map-gl';
 import busyBusSlice from 'store/BusyBusReducer';
 import { fetchBusesOnRouteAsync, fetchStopRouteEstimatesAsync, fetchBusCapacityAsync } from '../store/thunks';
 import CapacityDialog from './CapacityDialog';
 
 const MAP_TOKEN = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
-const initialViewState = {
-  latitude: 49.2529325119575,
-  longitude: -123.11687785517196,
-  zoom: 11
-};
+
+// const initialViewState = {
+//   latitude: 49.2529325119575,
+//   longitude: -123.11687785517196,
+//   zoom: 11
+// };
+
+
 const busStopIcon = faMapPin;
 const busIcon = faBusAlt;
 
 export function BusMap() {
+
+  const [viewport, setViewport] = useState({
+    latitude: 49.2529325119575,
+    longitude: -123.11687785517196,
+    zoom: 11
+  });
+
+  const [userCoords, setUserCoords] = useState([49.2529325119575,-123.11687785517196]);
+  const [zoom, setZoom] = useState(11);
+  
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((pos) => {
+      console.log(pos.coords.latitude, pos.coords.longitude);
+      setUserCoords([pos.coords.latitude, pos.coords.longitude]);
+      setViewport({
+        latitude: pos.coords.latitude,
+        longitude: pos.coords.longitude,
+        zoom: 3.5,
+      });
+    });
+  }, []);
+
   const busStops = useSelector((state) => state.busyBus.commuter.busStopsSearchResult);
   const selectedRoute = useSelector((state) => state.busyBus.commuter.selectedRoute);
   const buses = useSelector((state) => state.busyBus.commuter.busesToShow);
@@ -62,17 +87,22 @@ export function BusMap() {
     showBusStopOnly
   });
 
+  
+
+
   return (
     <>
       <Map
         reuseMaps={true}
-        initialViewState={initialViewState}
+        initialViewState={viewport}
         mapStyle="mapbox://styles/mapbox/streets-v9"
         mapboxAccessToken={MAP_TOKEN}
         attributionControl={false}
       >
         {markers}
       </Map>
+      <GeolocateControl 
+      onOutOfMaxBounds={() => {}}/> // Render closest bus and pull out sidebar
       <CapacityDialog dialogOpen={dialogOpened} dialogToggle={handleBusCapacityDialogToggle} bus={selectedBus} />
     </>
   );
