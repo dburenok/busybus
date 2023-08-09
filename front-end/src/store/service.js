@@ -56,12 +56,21 @@ const reportBusCapacity = async ({ busNo, capacityLevel }) => {
   return response.json();
 };
 
+const fetchClosestBusStop = async ({ latitude, longitude }) => {
+  const response = await fetch(`${API_URL}/stops/${latitude}/${longitude}`, {
+    method: 'GET'
+  });
+
+  return response.json();
+};
+
 const BusyBusService = {
   fetchRoutes,
   fetchStopsOnRoute,
   fetchBusesOnRoute,
   fetchStopRouteEstimates,
   fetchBusCapacity,
+  fetchClosestBusStop,
   reportBusCapacity
 };
 

@@ -5,7 +5,8 @@ import {
   FETCH_STOP_ON_ROUTE,
   FETCH_ESTIMATE,
   FETCH_BUS_CAPACITY,
-  REPORT_BUS_CAPACITY
+  REPORT_BUS_CAPACITY,
+  FETCH_CLOSEST_BUS_STOP
 } from './actionTypes';
 import BusyBusService from './service';
 
@@ -27,6 +28,10 @@ export const fetchStopRouteEstimatesAsync = createAsyncThunk(FETCH_ESTIMATE, asy
 
 export const fetchBusCapacityAsync = createAsyncThunk(FETCH_BUS_CAPACITY, async ({ busNo }) => {
   return await BusyBusService.fetchBusCapacity({ busNo });
+});
+
+export const fetchClosestBusStopAsync = createAsyncThunk(FETCH_CLOSEST_BUS_STOP, async ({ latitude, longitude }) => {
+  return await BusyBusService.fetchClosestBusStop({ latitude, longitude });
 });
 
 export const reportBusCapacityAysnc = createAsyncThunk(REPORT_BUS_CAPACITY, async ({ busNo, capacityLevel }) => {

@@ -48,6 +48,7 @@ const SearchAutoComplete = () => {
         dispatch(busyBusSlice.actions.setShowBusStopOnly(true));
         dispatch(fetchStopsOnRouteAsync({ routeNo: v.route }));
         dispatch(busyBusSlice.actions.setSelectedRoute(v.route));
+        dispatch(busyBusSlice.actions.setClosestBusStop({})); // clear closest bus stop
       }}
       renderInput={(params) => (
         <TextField
