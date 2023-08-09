@@ -64,6 +64,10 @@ This project is targeted at Vancouver bus-takers who want to have better control
 - bus/stop switch
 - aggregation queries for removing outdated capacity report
 - closest bus marker
+##### Dennis Fan:
+- back-end API access to DB
+- back-end DB adaptation to enable geospatial search
+- front-end design for geolocation based stop selection
 
 #### Sketch
 
