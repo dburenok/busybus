@@ -45,7 +45,7 @@ app.use(
     origin:
       process.env.BUSY_BUS_ENV === "dev"
         ? "http://localhost:3000"
-        : "https://busybus-front-end.onrender.com",
+        : "https://busybus.onrender.com",
   })
 );
 
