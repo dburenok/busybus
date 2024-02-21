@@ -1,5 +1,4 @@
 # BusyBus
-Deployed URL: https://busybus.onrender.com
 
 Group members: Dmitriy B., Dennis F., Lisa L. and Brendon S.
 
